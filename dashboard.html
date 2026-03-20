@@ -79,12 +79,31 @@ a { text-decoration: none; color: inherit; }
 .chart-card { background: var(--card); border: 1px solid var(--brd); border-radius: var(--r2); padding: 28px 24px; }
 .chart-title { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 24px; }
 .bar-chart { display: flex; flex-direction: column; gap: 14px; }
-.bar-row { display: flex; align-items: center; gap: 14px; }
+.bar-row { display: flex; align-items: center; gap: 14px; cursor: pointer; border-radius: var(--r); padding: 6px 8px; margin: -6px -8px; transition: background .15s; }
+.bar-row:hover { background: rgba(255,255,255,.04); }
+.bar-row.active { background: rgba(0,80,255,.08); }
 .bar-label { font-size: 13px; color: var(--sub); width: 130px; flex-shrink: 0; }
 .bar-track { flex: 1; height: 28px; background: rgba(255,255,255,.04); border-radius: 4px; overflow: hidden; }
 .bar-fill { height: 100%; background: var(--e); border-radius: 4px; transition: width 1s ease; display: flex; align-items: center; justify-content: flex-end; padding-right: 10px; font-size: 12px; font-weight: 600; color: #fff; min-width: 36px; }
 .status-list { display: flex; flex-direction: column; gap: 12px; }
-.status-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: rgba(255,255,255,.03); border-radius: var(--r); border: 1px solid rgba(255,255,255,.04); }
+.status-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 16px; background: rgba(255,255,255,.03); border-radius: var(--r); border: 1px solid rgba(255,255,255,.04); cursor: pointer; transition: background .15s, border-color .15s; }
+.status-row:hover { background: rgba(255,255,255,.05); }
+.status-row.active { background: rgba(0,80,255,.08); border-color: rgba(0,80,255,.2); }
+/* DETAIL PANEL */
+.detail-panel { background: var(--card); border: 1px solid var(--brd); border-radius: var(--r2); padding: 0; margin-bottom: 28px; overflow: hidden; display: none; }
+.detail-panel.show { display: block; }
+.detail-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--brd); }
+.detail-title { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: #fff; }
+.detail-close { background: none; border: 1px solid rgba(255,255,255,.1); border-radius: var(--r); padding: 6px 14px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.4); cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .15s; }
+.detail-close:hover { border-color: rgba(255,255,255,.3); color: #fff; }
+.detail-list { max-height: 400px; overflow-y: auto; }
+.detail-item { display: grid; grid-template-columns: 100px 1fr 1fr auto; gap: 16px; padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,.03); align-items: start; }
+.detail-item:last-child { border-bottom: none; }
+.detail-item:hover { background: rgba(255,255,255,.02); }
+.detail-date { font-size: 12px; color: rgba(255,255,255,.25); }
+.detail-name { font-size: 14px; color: #fff; font-weight: 500; }
+.detail-email { font-size: 13px; color: var(--e); }
+.detail-msg { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.5; grid-column: 1 / -1; margin-top: 4px; padding: 12px 14px; background: rgba(255,255,255,.03); border-radius: var(--r); border-left: 3px solid rgba(0,80,255,.3); }
 .status-dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 10px; flex-shrink: 0; }
 .status-dot.green { background: #4ade80; }
 .status-dot.yellow { background: #facc15; }
@@ -235,6 +254,14 @@ tbody tr:last-child td { border-bottom: none; }
                 <div class="chart-card"><div class="chart-title">Repartition par prestation</div><div class="bar-chart" id="barChart"></div></div>
                 <div class="chart-card"><div class="chart-title">Statut des demandes</div><div class="status-list" id="statusList"></div></div>
             </div>
+            <div class="detail-panel" id="detailPanel">
+                <div class="detail-header">
+                    <div class="detail-title" id="detailTitle">—</div>
+                    <button class="detail-close" onclick="closeDetail()">Fermer</button>
+                </div>
+                <div class="detail-list" id="detailList"></div>
+            </div>
+
             <div class="table-card">
                 <div class="table-header">
                     <div class="table-title">Derniers devis</div>
@@ -502,20 +529,79 @@ function renderDevisStats() {
     document.getElementById('s-rate').innerHTML = rate + '<small>%</small>';
 }
 
+let activeFilter = null; // {type:'prestation'|'statut', value:'...'}
+
 function renderCharts() {
     const types = {};
     allDevis.forEach(d => { types[d.prestation] = (types[d.prestation] || 0) + 1; });
     const max = Math.max(...Object.values(types), 1);
     document.getElementById('barChart').innerHTML = Object.entries(types).map(([n, c]) =>
-        `<div class="bar-row"><div class="bar-label">${esc(n)}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(c/max*100)}%">${parseInt(c)}</div></div></div>`
+        `<div class="bar-row ${activeFilter && activeFilter.type==='prestation' && activeFilter.value===n ? 'active' : ''}" onclick="filterByPrestation('${esc(n)}')"><div class="bar-label">${esc(n)}</div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(c/max*100)}%">${parseInt(c)}</div></div></div>`
     ).join('') || '<p style="color:rgba(255,255,255,.3);font-size:14px">Aucune donnee</p>';
 
     const s = { nouveau: 0, en_cours: 0, termine: 0 };
     allDevis.forEach(d => { if (s[d.statut] !== undefined) s[d.statut]++; });
-    document.getElementById('statusList').innerHTML = `
-        <div class="status-row"><div class="status-label"><div class="status-dot blue"></div>Nouveau</div><div class="status-count">${s.nouveau}</div></div>
-        <div class="status-row"><div class="status-label"><div class="status-dot yellow"></div>En cours</div><div class="status-count">${s.en_cours}</div></div>
-        <div class="status-row"><div class="status-label"><div class="status-dot green"></div>Termine</div><div class="status-count">${s.termine}</div></div>`;
+    const sNames = { nouveau: 'Nouveau', en_cours: 'En cours', termine: 'Termine' };
+    const sDots = { nouveau: 'blue', en_cours: 'yellow', termine: 'green' };
+    document.getElementById('statusList').innerHTML = Object.entries(s).map(([key, count]) =>
+        `<div class="status-row ${activeFilter && activeFilter.type==='statut' && activeFilter.value===key ? 'active' : ''}" onclick="filterByStatut('${key}')"><div class="status-label"><div class="status-dot ${sDots[key]}"></div>${sNames[key]}</div><div class="status-count">${count}</div></div>`
+    ).join('');
+}
+
+function filterByPrestation(prestation) {
+    if (activeFilter && activeFilter.type === 'prestation' && activeFilter.value === prestation) {
+        activeFilter = null;
+        closeDetail();
+        renderCharts();
+        return;
+    }
+    activeFilter = { type: 'prestation', value: prestation };
+    const filtered = allDevis.filter(d => d.prestation === prestation);
+    showDetail('Demandes — ' + prestation + ' (' + filtered.length + ')', filtered);
+    renderCharts();
+}
+
+function filterByStatut(statut) {
+    const sNames = { nouveau: 'Nouveau', en_cours: 'En cours', termine: 'Termine' };
+    if (activeFilter && activeFilter.type === 'statut' && activeFilter.value === statut) {
+        activeFilter = null;
+        closeDetail();
+        renderCharts();
+        return;
+    }
+    activeFilter = { type: 'statut', value: statut };
+    const filtered = allDevis.filter(d => d.statut === statut);
+    showDetail('Demandes — ' + (sNames[statut] || statut) + ' (' + filtered.length + ')', filtered);
+    renderCharts();
+}
+
+function showDetail(title, devisList) {
+    const panel = document.getElementById('detailPanel');
+    document.getElementById('detailTitle').textContent = title;
+    if (!devisList.length) {
+        document.getElementById('detailList').innerHTML = '<div class="empty-state">Aucun devis dans cette categorie.</div>';
+    } else {
+        document.getElementById('detailList').innerHTML = devisList.map(d => {
+            const date = new Date(d.created_at).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+            const bc = d.statut === 'nouveau' ? 'badge-new' : d.statut === 'en_cours' ? 'badge-progress' : 'badge-done';
+            const bt = d.statut === 'nouveau' ? 'Nouveau' : d.statut === 'en_cours' ? 'En cours' : 'Termine';
+            return `<div class="detail-item">
+                <div class="detail-date">${esc(date)}</div>
+                <div class="detail-name">${esc(d.prenom)} ${esc(d.nom)}</div>
+                <div class="detail-email">${esc(d.email)}</div>
+                <span class="badge ${bc}" style="justify-self:end">${bt}</span>
+                ${d.message ? `<div class="detail-msg">${esc(d.message)}</div>` : ''}
+            </div>`;
+        }).join('');
+    }
+    panel.classList.add('show');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeDetail() {
+    activeFilter = null;
+    document.getElementById('detailPanel').classList.remove('show');
+    renderCharts();
 }
 
 function renderDevisTable() {
