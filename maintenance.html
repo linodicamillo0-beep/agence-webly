@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maintenance — Agence Webly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: 'DM Sans', sans-serif; background: #fff; color: #0a0a0a; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+:root {
+    --e: #0050FF; --e2: #0040CC; --ebg: #EBF0FF;
+    --blk: #080808; --wht: #FFFFFF; --off: #F7F7F7;
+    --ink: #0a0a0a; --sub: #666666; --brd: #E8E8E8;
+    --r: 6px; --r2: 14px; --t: .35s cubic-bezier(.4,0,.2,1);
+}
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,10,10,.96); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+nav .wrap { display: flex; align-items: center; justify-content: space-between; }
+.n-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: #fff; }
+.n-logo b { color: var(--e); }
+.n-back {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color var(--t), background var(--t);
+}
+.n-back:hover { border-color: var(--e); background: rgba(0,80,255,.08); }
+.n-back svg { width: 18px; height: 18px; stroke: rgba(255,255,255,.6); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.n-back:hover svg { stroke: var(--e); }
+
+.page-hero { background: var(--blk); padding: 140px 0 80px; position: relative; overflow: hidden; }
+.page-hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(0,80,255,.06) 0%, transparent 70%); pointer-events: none; }
+.page-label { font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--e); margin-bottom: 20px; display: block; }
+.page-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(36px, 5vw, 56px); font-weight: 700; color: #fff; letter-spacing: -.03em; line-height: 1.05; margin-bottom: 20px; }
+.page-subtitle { font-size: 17px; color: rgba(255,255,255,.4); line-height: 1.7; max-width: 560px; font-weight: 300; }
+
+.sec { padding: 64px 0; }
+.block-header { margin-bottom: 40px; }
+.block-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(24px, 3vw, 34px); font-weight: 700; letter-spacing: -.02em; color: var(--ink); margin-bottom: 12px; }
+.block-desc { font-size: 15px; color: var(--sub); line-height: 1.75; max-width: 600px; }
+
+.feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.feat-card { background: var(--off); border: 1px solid var(--brd); border-radius: var(--r2); padding: 36px 28px; transition: border-color var(--t), transform var(--t); }
+.feat-card:hover { border-color: rgba(0,80,255,.25); transform: translateY(-3px); }
+.feat-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--ebg); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.feat-icon svg { width: 20px; height: 20px; stroke: var(--e); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.feat-name { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.feat-txt { font-size: 14px; color: var(--sub); line-height: 1.65; }
+
+/* WHAT YOU GET */
+.checklist { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--brd); border-radius: var(--r2); overflow: hidden; }
+.check-item { padding: 24px 28px; border-bottom: 1px solid var(--brd); border-right: 1px solid var(--brd); display: flex; align-items: flex-start; gap: 14px; }
+.check-item:nth-child(even) { border-right: none; }
+.check-item:nth-last-child(-n+2) { border-bottom: none; }
+.check-dot { width: 20px; height: 20px; border-radius: 50%; background: var(--ebg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px; }
+.check-dot svg { width: 12px; height: 12px; stroke: var(--e); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.check-name { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.check-txt { font-size: 13px; color: var(--sub); line-height: 1.6; }
+
+/* FAQ */
+.faq { display: flex; flex-direction: column; }
+.faq-item { border-bottom: 1px solid var(--brd); padding: 24px 0; }
+.faq-item:last-child { border-bottom: none; }
+.faq-q { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.faq-a { font-size: 14px; color: var(--sub); line-height: 1.7; max-width: 680px; }
+
+.page-cta { background: var(--blk); border-top: 1px solid rgba(255,255,255,.06); padding: 60px 0; }
+.cta-row { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.cta-h { font-family: 'Space Grotesk', sans-serif; font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #fff; letter-spacing: -.02em; }
+.cta-h span { color: var(--e); }
+.btn-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--e); color: #fff; padding: 16px 32px; border-radius: var(--r); font-size: 14px; font-weight: 600; transition: var(--t); }
+.btn-cta:hover { background: var(--e2); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0,80,255,.3); }
+.btn-cta svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+footer { background: #040408; border-top: 1px solid rgba(255,255,255,.05); padding: 32px 0; }
+.ft-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.ft-copy { font-size: 13px; color: rgba(255,255,255,.2); }
+.ft-logo { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: rgba(255,255,255,.4); }
+.ft-logo b { color: var(--e); }
+
+@media (max-width: 768px) {
+    .wrap { padding: 0 24px; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .checklist { grid-template-columns: 1fr; }
+    .check-item { border-right: none !important; }
+    .check-item:nth-last-child(2) { border-bottom: 1px solid var(--brd); }
+    .cta-row { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="wrap">
+        <a href="index.html" class="n-logo">Webly<b>.</b></a>
+        <a href="index.html#services" class="n-back" title="Retour aux prestations">
+            <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+    </div>
+</nav>
+
+<section class="page-hero">
+    <div class="wrap">
+        <span class="page-label">Maintenance</span>
+        <h1 class="page-title">Votre site,<br>toujours au top.</h1>
+        <p class="page-subtitle">Mises a jour, securite, sauvegardes, modifications — on s'occupe de tout pendant que vous vous concentrez sur votre activite.</p>
+    </div>
+</section>
+
+<section class="sec">
+    <div class="wrap">
+        <div class="block-header">
+            <h2 class="block-title">Pourquoi c'est indispensable.</h2>
+            <p class="block-desc">Un site non maintenu, c'est un site qui ralentit, qui devient vulnerable et qui perd en referencement.</p>
+        </div>
+        <div class="feat-grid">
+            <div class="feat-card">
+                <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <div class="feat-name">Securite</div>
+                <div class="feat-txt">Les failles de securite sont corrigees en continu. Votre site est protege contre les attaques et les malwares.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+                <div class="feat-name">Performance</div>
+                <div class="feat-txt">Votre site reste rapide dans le temps. On surveille les temps de chargement et on optimise en continu.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+                <div class="feat-name">Referencement</div>
+                <div class="feat-txt">Google penalise les sites lents et non securises. La maintenance preserve votre positionnement dans les resultats.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sec" style="background: var(--off);">
+    <div class="wrap">
+        <div class="block-header">
+            <h2 class="block-title">Ce qui est inclus chaque mois.</h2>
+            <p class="block-desc">Un forfait clair, sans surprise. Tout ce dont votre site a besoin pour rester en forme.</p>
+        </div>
+        <div class="checklist">
+            <div class="check-item">
+                <div class="check-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div>
+                    <div class="check-name">Mises a jour techniques</div>
+                    <div class="check-txt">CMS, plugins, frameworks — tout est mis a jour regulierement pour eviter les incompatibilites.</div>
+                </div>
+            </div>
+            <div class="check-item">
+                <div class="check-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div>
+                    <div class="check-name">Sauvegarde hebdomadaire</div>
+                    <div class="check-txt">Une copie complete de votre site est sauvegardee chaque semaine. Restauration possible a tout moment.</div>
+                </div>
+            </div>
+            <div class="check-item">
+                <div class="check-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div>
+                    <div class="check-name">Corrections de bugs</div>
+                    <div class="check-txt">Un probleme sur le site ? On le detecte et on le corrige rapidement, souvent avant que vous le remarquiez.</div>
+                </div>
+            </div>
+            <div class="check-item">
+                <div class="check-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div>
+                    <div class="check-name">Modifications de contenu</div>
+                    <div class="check-txt">Changement de texte, d'image ou d'information ? Envoyez-nous un email, c'est fait dans la journee.</div>
+                </div>
+            </div>
+            <div class="check-item">
+                <div class="check-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div>
+                    <div class="check-name">Support prioritaire</div>
+                    <div class="check-txt">Un probleme urgent ? Vous passez en priorite. Reponse garantie sous 24h ouvrees par email.</div>
+                </div>
+            </div>
+            <div class="check-item">
+                <div class="check-dot"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div>
+                    <div class="check-name">Rapport mensuel</div>
+                    <div class="check-txt">Chaque mois, un rapport clair sur l'etat de votre site : uptime, vitesse, actions realisees.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sec">
+    <div class="wrap">
+        <div class="block-header">
+            <h2 class="block-title">Questions frequentes.</h2>
+        </div>
+        <div class="faq">
+            <div class="faq-item">
+                <div class="faq-q">Je peux resilier quand je veux ?</div>
+                <div class="faq-a">Oui, sans engagement de duree. Vous pouvez arreter la maintenance a la fin de n'importe quel mois. On vous rend l'acces complet a votre site.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Combien de modifications par mois ?</div>
+                <div class="faq-a">Le forfait inclut des modifications de contenu raisonnables (textes, images, informations). Pour des ajouts de fonctionnalites ou des refontes de pages, on etablit un devis separe.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Mon site n'a pas ete fait par Webly, c'est possible ?</div>
+                <div class="faq-a">Tout a fait. On realise un audit technique gratuit de votre site pour evaluer son etat et vous proposer un plan de maintenance adapte.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-q">Que se passe-t-il en cas de panne ?</div>
+                <div class="faq-a">On intervient en priorite. En cas de panne critique, on restaure une sauvegarde dans l'heure. Votre site est toujours entre de bonnes mains.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="page-cta">
+    <div class="wrap">
+        <div class="cta-row">
+            <h2 class="cta-h">Votre site merite d'etre maintenu.<br><span>On s'en charge.</span></h2>
+            <a href="index.html#contact" class="btn-cta">
+                Souscrire
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="wrap">
+        <div class="ft-row">
+            <span class="ft-logo">Webly<b>.</b></span>
+            <span class="ft-copy">&copy; 2026 Agence Webly. Tous droits reserves.</span>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>

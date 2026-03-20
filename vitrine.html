@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Vitrine — Agence Webly</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: 'DM Sans', sans-serif; background: #fff; color: #0a0a0a; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+:root {
+    --e: #0050FF; --e2: #0040CC; --ebg: #EBF0FF;
+    --blk: #080808; --wht: #FFFFFF; --off: #F7F7F7;
+    --ink: #0a0a0a; --sub: #666666; --brd: #E8E8E8;
+    --r: 6px; --r2: 14px; --t: .35s cubic-bezier(.4,0,.2,1);
+}
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 48px; }
+
+/* NAV */
+nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(10,10,10,.96); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.06); }
+nav .wrap { display: flex; align-items: center; justify-content: space-between; }
+.n-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 18px; color: #fff; }
+.n-logo b { color: var(--e); }
+.n-back {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.12);
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color var(--t), background var(--t);
+}
+.n-back:hover { border-color: var(--e); background: rgba(0,80,255,.08); }
+.n-back svg { width: 18px; height: 18px; stroke: rgba(255,255,255,.6); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.n-back:hover svg { stroke: var(--e); }
+
+/* HERO */
+.page-hero {
+    background: var(--blk); padding: 140px 0 80px; position: relative; overflow: hidden;
+}
+.page-hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(0,80,255,.06) 0%, transparent 70%); pointer-events: none; }
+.page-label { font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: var(--e); margin-bottom: 20px; display: block; }
+.page-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(36px, 5vw, 56px); font-weight: 700; color: #fff; letter-spacing: -.03em; line-height: 1.05; margin-bottom: 20px; }
+.page-subtitle { font-size: 17px; color: rgba(255,255,255,.4); line-height: 1.7; max-width: 560px; font-weight: 300; }
+
+/* SECTIONS */
+.sec { padding: 64px 0; }
+.sec-dark { background: var(--blk); padding: 64px 0; }
+
+/* CONTENT BLOCKS */
+.block-header { margin-bottom: 40px; }
+.block-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(24px, 3vw, 34px); font-weight: 700; letter-spacing: -.02em; color: var(--ink); margin-bottom: 12px; }
+.block-desc { font-size: 15px; color: var(--sub); line-height: 1.75; max-width: 600px; }
+
+/* FEATURES GRID */
+.feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.feat-card {
+    background: var(--off); border: 1px solid var(--brd); border-radius: var(--r2);
+    padding: 36px 28px; transition: border-color var(--t), transform var(--t);
+}
+.feat-card:hover { border-color: rgba(0,80,255,.25); transform: translateY(-3px); }
+.feat-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--ebg); display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+.feat-icon svg { width: 20px; height: 20px; stroke: var(--e); fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.feat-name { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.feat-txt { font-size: 14px; color: var(--sub); line-height: 1.65; }
+
+/* PROCESS STEPS */
+.steps { display: flex; flex-direction: column; gap: 0; }
+.step { display: grid; grid-template-columns: 56px 1fr; gap: 24px; padding: 28px 0; border-bottom: 1px solid var(--brd); }
+.step:last-child { border-bottom: none; }
+.step-num { font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 700; color: var(--e); letter-spacing: .08em; opacity: .5; padding-top: 4px; }
+.step-name { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+.step-txt { font-size: 14px; color: var(--sub); line-height: 1.7; }
+
+/* EXAMPLE SHOWCASE */
+.showcase {
+    background: linear-gradient(145deg, #040c1e, #0a1838);
+    border-radius: var(--r2); border: 1px solid rgba(255,255,255,.06);
+    padding: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
+}
+.showcase-info {}
+.showcase-tag { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--e); margin-bottom: 16px; }
+.showcase-title { font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700; color: #fff; letter-spacing: -.02em; margin-bottom: 12px; }
+.showcase-desc { font-size: 14px; color: rgba(255,255,255,.4); line-height: 1.7; margin-bottom: 24px; }
+.showcase-list { list-style: none; }
+.showcase-list li { font-size: 13px; color: rgba(255,255,255,.5); padding: 6px 0; display: flex; align-items: center; gap: 10px; }
+.showcase-list li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: var(--e); flex-shrink: 0; }
+.showcase-mockup {
+    background: rgba(255,255,255,.03); border: 1px solid rgba(255,255,255,.07);
+    border-radius: 8px; overflow: hidden; height: 280px;
+}
+.showcase-mockup .m-bar { height: 28px; background: rgba(255,255,255,.05); border-bottom: 1px solid rgba(255,255,255,.04); display: flex; align-items: center; gap: 6px; padding: 0 12px; }
+.showcase-mockup .m-dot { width: 7px; height: 7px; border-radius: 50%; }
+.showcase-mockup .m-dot:nth-child(1) { background: rgba(255,90,90,.4); }
+.showcase-mockup .m-dot:nth-child(2) { background: rgba(255,200,50,.4); }
+.showcase-mockup .m-dot:nth-child(3) { background: rgba(50,200,100,.4); }
+.showcase-mockup .m-body { padding: 20px; }
+.showcase-mockup .m-line { height: 6px; border-radius: 3px; background: rgba(255,255,255,.08); margin-bottom: 10px; }
+.showcase-mockup .m-line.short { width: 50%; }
+.showcase-mockup .m-line.accent { background: rgba(0,80,255,.25); width: 30%; }
+.showcase-mockup .m-block { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 16px; }
+.showcase-mockup .m-card { height: 60px; border-radius: 6px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.05); }
+
+/* CTA */
+.page-cta {
+    background: var(--blk); border-top: 1px solid rgba(255,255,255,.06); padding: 60px 0;
+}
+.cta-row { display: flex; align-items: center; justify-content: space-between; gap: 32px; flex-wrap: wrap; }
+.cta-h { font-family: 'Space Grotesk', sans-serif; font-size: clamp(22px, 3vw, 32px); font-weight: 700; color: #fff; letter-spacing: -.02em; }
+.cta-h span { color: var(--e); }
+.btn-cta { display: inline-flex; align-items: center; gap: 10px; background: var(--e); color: #fff; padding: 16px 32px; border-radius: var(--r); font-size: 14px; font-weight: 600; transition: var(--t); }
+.btn-cta:hover { background: var(--e2); transform: translateY(-1px); box-shadow: 0 6px 24px rgba(0,80,255,.3); }
+.btn-cta svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* FOOTER */
+footer { background: #040408; border-top: 1px solid rgba(255,255,255,.05); padding: 32px 0; }
+.ft-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.ft-copy { font-size: 13px; color: rgba(255,255,255,.2); }
+.ft-logo { font-family: 'Space Grotesk', sans-serif; font-size: 15px; font-weight: 700; color: rgba(255,255,255,.4); }
+.ft-logo b { color: var(--e); }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    .wrap { padding: 0 24px; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .showcase { grid-template-columns: 1fr; }
+    .showcase-mockup { height: 200px; }
+    .cta-row { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+    <div class="wrap">
+        <a href="index.html" class="n-logo">Webly<b>.</b></a>
+        <a href="index.html#services" class="n-back" title="Retour aux prestations">
+            <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        </a>
+    </div>
+</nav>
+
+<section class="page-hero">
+    <div class="wrap">
+        <span class="page-label">Site Vitrine</span>
+        <h1 class="page-title">Votre vitrine<br>en ligne.</h1>
+        <p class="page-subtitle">Un site elegamment concu pour presenter votre activite, gagner en credibilite et attirer de nouveaux clients. Le tout livre en 2 a 3 semaines.</p>
+    </div>
+</section>
+
+<section class="sec">
+    <div class="wrap">
+        <div class="block-header">
+            <h2 class="block-title">Ce qui est inclus.</h2>
+            <p class="block-desc">Tout ce qu'il faut pour lancer une presence en ligne solide, rapide et bien referencee.</p>
+        </div>
+        <div class="feat-grid">
+            <div class="feat-card">
+                <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg></div>
+                <div class="feat-name">Design sur mesure</div>
+                <div class="feat-txt">Chaque page est dessinee specifiquement pour votre marque. Pas de template, pas de compromis.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div>
+                <div class="feat-name">100% Responsive</div>
+                <div class="feat-txt">Votre site s'adapte parfaitement a tous les ecrans — mobile, tablette, desktop. Aucun compromis.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg></div>
+                <div class="feat-name">SEO optimise</div>
+                <div class="feat-txt">Structure technique pensee pour le referencement Google. Titres, meta, vitesse — tout est soigne.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+                <div class="feat-name">Formulaire de contact</div>
+                <div class="feat-txt">Vos visiteurs peuvent vous contacter directement depuis votre site. Les messages arrivent dans votre boite mail.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                <div class="feat-name">Performance maximale</div>
+                <div class="feat-txt">Chargement en moins de 2 secondes. Code leger et optimise pour une experience fluide.</div>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+                <div class="feat-name">HTTPS securise</div>
+                <div class="feat-txt">Certificat SSL inclus. Votre site affiche le cadenas dans la barre du navigateur. Confiance garantie.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sec" style="background: var(--off);">
+    <div class="wrap">
+        <div class="block-header">
+            <h2 class="block-title">Comment ca se passe.</h2>
+            <p class="block-desc">Un processus clair en 4 etapes. Vous savez toujours ou on en est.</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">01</div>
+                <div>
+                    <div class="step-name">Brief et decouverte</div>
+                    <div class="step-txt">On echange ensemble sur votre activite, votre cible, vos concurrents et vos objectifs. On definit le cahier des charges ensemble.</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">02</div>
+                <div>
+                    <div class="step-name">Maquette et validation</div>
+                    <div class="step-txt">Vous recevez une maquette complete du site pour validation. On ajuste ensemble jusqu'a ce que le design vous convienne parfaitement.</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">03</div>
+                <div>
+                    <div class="step-name">Developpement</div>
+                    <div class="step-txt">Le site est code proprement, optimise pour la vitesse et le referencement. On integre vos contenus et vos visuels.</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-num">04</div>
+                <div>
+                    <div class="step-name">Mise en ligne</div>
+                    <div class="step-txt">Le site est deploye sur votre nom de domaine. On vous forme a la gestion basique et on reste disponibles pour le suivi.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="sec">
+    <div class="wrap">
+        <div class="block-header">
+            <h2 class="block-title">Exemple de realisation.</h2>
+            <p class="block-desc">Un apercu concret de ce qu'on livre pour un site vitrine.</p>
+        </div>
+        <div class="showcase">
+            <div class="showcase-info">
+                <div class="showcase-tag">Projet client</div>
+                <div class="showcase-title">Le Botaniste</div>
+                <div class="showcase-desc">Site vitrine pour un restaurant gastronomique parisien. Design epure, navigation intuitive et reservation simplifiee.</div>
+                <ul class="showcase-list">
+                    <li>5 pages sur mesure</li>
+                    <li>Carte du restaurant interactive</li>
+                    <li>Galerie photo immersive</li>
+                    <li>Formulaire de reservation</li>
+                    <li>Integration Google Maps</li>
+                    <li>Optimisation mobile complete</li>
+                </ul>
+            </div>
+            <div class="showcase-mockup">
+                <div class="m-bar"><div class="m-dot"></div><div class="m-dot"></div><div class="m-dot"></div></div>
+                <div class="m-body">
+                    <div class="m-line" style="width:70%"></div>
+                    <div class="m-line short"></div>
+                    <div class="m-line accent"></div>
+                    <div class="m-block">
+                        <div class="m-card"></div>
+                        <div class="m-card"></div>
+                        <div class="m-card"></div>
+                    </div>
+                    <div class="m-line" style="width:80%; margin-top: 16px;"></div>
+                    <div class="m-line short"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="page-cta">
+    <div class="wrap">
+        <div class="cta-row">
+            <h2 class="cta-h">Besoin d'un site vitrine ?<br><span>On s'en occupe.</span></h2>
+            <a href="index.html#contact" class="btn-cta">
+                Faire un devis
+                <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <div class="wrap">
+        <div class="ft-row">
+            <span class="ft-logo">Webly<b>.</b></span>
+            <span class="ft-copy">&copy; 2026 Agence Webly. Tous droits reserves.</span>
+        </div>
+    </div>
+</footer>
+
+</body>
+</html>
