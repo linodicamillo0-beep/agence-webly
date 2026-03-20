@@ -548,9 +548,15 @@ async function setDevisStatus(id, statut) {
 async function delDevis(id) {
     if (!isSessionValid()) { doLogout(); return; }
     id = Number(id); if (isNaN(id)) return;
-    if (!confirm('Supprimer ?')) return;
-    await fetch(SUPA_URL + '/rest/v1/devis?id=eq.' + encodeURIComponent(id), { method: 'DELETE', headers: H });
-    loadDevis();
+    if (!confirm('Supprimer ce devis ?')) return;
+    try {
+        const res = await fetch(SUPA_URL + '/rest/v1/devis?id=eq.' + id, { method: 'DELETE', headers: H });
+        if (!res.ok) { alert('Erreur suppression: ' + res.status); return; }
+        allDevis = allDevis.filter(d => Number(d.id) !== id);
+        renderDevisStats();
+        renderCharts();
+        renderDevisTable();
+    } catch(e) { alert('Erreur reseau'); console.error(e); }
 }
 
 // ==================== PROSPECTS ====================
@@ -603,11 +609,12 @@ function renderProspects() {
             <td><span class="badge ${sClass}">${sLabel}</span></td>
             <td class="td-comment" onclick="openModal(${parseInt(p.id)})" title="${esc(p.commentaire || '')}">${esc(p.commentaire || '')}</td>
             <td class="td-actions">
-                <button class="td-btn" onclick="setProspectStatus(${parseInt(p.id)},'contacte')">Contacte</button>
-                <button class="td-btn td-btn-grn" onclick="openModalWithStatus(${parseInt(p.id)},'interesse')">Interesse</button>
-                <button class="td-btn" onclick="setProspectStatus(${parseInt(p.id)},'client')" style="color:#4ade80;border-color:rgba(74,222,128,.3)">Client</button>
-                <button class="td-btn" onclick="setProspectStatus(${parseInt(p.id)},'perdu')">Perdu</button>
-                <button class="td-btn td-btn-del" onclick="delProspect(${parseInt(p.id)})">X</button>
+                ${p.statut !== 'a_appeler' ? `<button class="td-btn" onclick="setProspectStatus(${parseInt(p.id)},'a_appeler')" style="color:#6B9FFF;border-color:rgba(0,80,255,.3)">A appeler</button>` : ''}
+                ${p.statut !== 'contacte' ? `<button class="td-btn" onclick="setProspectStatus(${parseInt(p.id)},'contacte')">Contacte</button>` : ''}
+                ${p.statut !== 'interesse' ? `<button class="td-btn td-btn-grn" onclick="openModalWithStatus(${parseInt(p.id)},'interesse')">Interesse</button>` : ''}
+                ${p.statut !== 'client' ? `<button class="td-btn" onclick="setProspectStatus(${parseInt(p.id)},'client')" style="color:#4ade80;border-color:rgba(74,222,128,.3)">Client</button>` : ''}
+                ${p.statut !== 'perdu' ? `<button class="td-btn" onclick="setProspectStatus(${parseInt(p.id)},'perdu')">Perdu</button>` : ''}
+                <button class="td-btn td-btn-del" onclick="delProspect(${parseInt(p.id)})">Suppr.</button>
             </td></tr>`;
     }).join('');
 }
@@ -651,8 +658,13 @@ async function delProspect(id) {
     if (!isSessionValid()) { doLogout(); return; }
     id = Number(id); if (isNaN(id)) return;
     if (!confirm('Supprimer ce prospect ?')) return;
-    await fetch(SUPA_URL + '/rest/v1/prospects?id=eq.' + encodeURIComponent(id), { method: 'DELETE', headers: H });
-    loadProspects();
+    try {
+        const res = await fetch(SUPA_URL + '/rest/v1/prospects?id=eq.' + id, { method: 'DELETE', headers: H });
+        if (!res.ok) { alert('Erreur suppression: ' + res.status); return; }
+        allProspects = allProspects.filter(p => Number(p.id) !== id);
+        renderProspectStats();
+        renderProspects();
+    } catch(e) { alert('Erreur reseau'); console.error(e); }
 }
 
 // ==================== MODAL COMMENTAIRE ====================
