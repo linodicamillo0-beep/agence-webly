@@ -541,13 +541,13 @@ function renderDevisTable() {
 
 async function setDevisStatus(id, statut) {
     if (!isSessionValid()) { doLogout(); return; }
-    if (!Number.isInteger(id) || !VALID_STATUTS_D.includes(statut)) return;
+    id = Number(id); if (isNaN(id) || !VALID_STATUTS_D.includes(statut)) return;
     await fetch(SUPA_URL + '/rest/v1/devis?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers: H, body: JSON.stringify({ statut }) });
     loadDevis();
 }
 async function delDevis(id) {
     if (!isSessionValid()) { doLogout(); return; }
-    if (!Number.isInteger(id)) return;
+    id = Number(id); if (isNaN(id)) return;
     if (!confirm('Supprimer ?')) return;
     await fetch(SUPA_URL + '/rest/v1/devis?id=eq.' + encodeURIComponent(id), { method: 'DELETE', headers: H });
     loadDevis();
@@ -642,14 +642,14 @@ async function addProspect() {
 
 async function setProspectStatus(id, statut) {
     if (!isSessionValid()) { doLogout(); return; }
-    if (!Number.isInteger(id) || !VALID_STATUTS_P.includes(statut)) return;
+    id = Number(id); if (isNaN(id) || !VALID_STATUTS_P.includes(statut)) return;
     await fetch(SUPA_URL + '/rest/v1/prospects?id=eq.' + encodeURIComponent(id), { method: 'PATCH', headers: H, body: JSON.stringify({ statut }) });
     loadProspects();
 }
 
 async function delProspect(id) {
     if (!isSessionValid()) { doLogout(); return; }
-    if (!Number.isInteger(id)) return;
+    id = Number(id); if (isNaN(id)) return;
     if (!confirm('Supprimer ce prospect ?')) return;
     await fetch(SUPA_URL + '/rest/v1/prospects?id=eq.' + encodeURIComponent(id), { method: 'DELETE', headers: H });
     loadProspects();
@@ -678,7 +678,7 @@ function closeModal() {
 
 async function saveComment() {
     if (!isSessionValid()) { doLogout(); return; }
-    if (editingId === null || !Number.isInteger(editingId)) return;
+    if (editingId === null || isNaN(Number(editingId))) return;
     const comment = sanitize(document.getElementById('modal-comment').value.trim());
     if (comment.length > 1000) return alert('Commentaire trop long (max 1000 caracteres).');
     await fetch(SUPA_URL + '/rest/v1/prospects?id=eq.' + encodeURIComponent(editingId), {
